@@ -7,15 +7,19 @@ interface SimpleCardProps {
   card: Card;
   handleChoice: (card: Card) => void;
   flipped: boolean;
+  disabled: boolean;
 }
 
 const SimpleCard: React.FC<SimpleCardProps> = ({
   card,
   handleChoice,
   flipped,
+  disabled,
 }) => {
   const handleClick = () => {
-    handleChoice(card);
+    if (!disabled) {
+      handleChoice(card);
+    }
   };
 
   return (
