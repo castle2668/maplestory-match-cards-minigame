@@ -24,14 +24,17 @@ const SimpleCard: React.FC<SimpleCardProps> = ({
         src={card.src}
         alt="card front"
         className={cn(
-          "w-32 h-32 object-cover border-2  border-white rounded-md absolute",
-          flipped ? "[transform:rotateY(0deg)]" : "[transform:rotateY(90deg)]"
+          "w-32 h-32 object-cover border-2  border-white rounded-md [transform:rotateY(90deg)] transition-all ease-in duration-200 absolute",
+          flipped && "[transform:rotateY(0deg)] delay-200"
         )}
       />
       <img
         src="/images/cover.jpeg"
         alt="card back"
-        className="w-32 h-32 object-cover border-2  border-white rounded-md"
+        className={cn(
+          "w-32 h-32 object-cover border-2  border-white rounded-md [transform:rotateY(0deg)] transition-all ease-in duration-200 delay-200",
+          flipped && "[transform:rotateY(90deg)] delay-0"
+        )}
         onClick={handleClick}
       />
     </div>
