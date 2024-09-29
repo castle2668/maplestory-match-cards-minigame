@@ -66,7 +66,7 @@ export default {
         darkGray: "#333",
       },
       backgroundImage: {
-        "footer-texture": "url('/src/assets/footer-texture.png')",
+        "footer-texture": "url('/src/assets/images/footer-texture.png')",
       },
     },
   },

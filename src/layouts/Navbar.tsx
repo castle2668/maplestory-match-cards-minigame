@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ModeToggle } from "@/components/mode-toggle";
+import ModeToggle from "@/components/ModeToggle";
 
 const Navbar: React.FC = () => {
   return (

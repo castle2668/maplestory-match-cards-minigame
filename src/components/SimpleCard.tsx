@@ -37,7 +37,8 @@ const SimpleCard: React.FC<SimpleCardProps> = ({
         alt="card back"
         className={cn(
           "w-32 h-32 object-cover border-2  border-white rounded-md [transform:rotateY(0deg)] transition-all ease-in duration-200 delay-200",
-          flipped && "[transform:rotateY(90deg)] delay-0"
+          flipped && "[transform:rotateY(90deg)] delay-0",
+          disabled ? "cursor-not-allowed" : "cursor-pointer"
         )}
         onClick={handleClick}
       />
