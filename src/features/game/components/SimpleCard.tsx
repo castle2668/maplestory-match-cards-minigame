@@ -1,7 +1,9 @@
 import React from "react";
 
 import { cn } from "@/lib/utils";
-import { Card } from "@/pages/Home";
+
+import { Card } from "..";
+import CoverImage from "../assets/images/cover.jpeg";
 
 interface SimpleCardProps {
   card: Card;
@@ -33,7 +35,7 @@ const SimpleCard: React.FC<SimpleCardProps> = ({
         )}
       />
       <img
-        src="/images/cover.jpeg"
+        src={CoverImage}
         alt="card back"
         className={cn(
           "w-32 h-32 object-cover border-2  border-white rounded-md [transform:rotateY(0deg)] transition-all ease-in duration-200 delay-200",

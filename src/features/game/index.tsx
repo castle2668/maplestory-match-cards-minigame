@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-import SimpleCard from "@/components/SimpleCard";
 import { Button } from "@/components/ui/button";
+
+import SimpleCard from "./components/SimpleCard";
 
 const cardImages = [
   { src: "/images/horny-mushroom.jpeg", matched: false, flipped: false },
@@ -19,7 +20,7 @@ export interface Card {
   flipped: boolean;
 }
 
-const Home: React.FC = () => {
+const Game: React.FC = () => {
   const [cards, setCards] = useState<Card[]>([]);
   const [turns, setTurns] = useState(0);
   const [choiceOne, setChoiceOne] = useState<Card | null>(null);
@@ -104,4 +105,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default Game;

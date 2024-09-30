@@ -5,19 +5,24 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import { ThemeProvider } from "./components/theme-provider";
 import ErrorPage from "./pages/ErrorPage";
-import Home from "./pages/Home";
-import Root from "./pages/Root";
+import GamePage from "./pages/GamePage";
+import HomePage from "./pages/HomePage";
+import RootLayout from "./pages/RootLayout";
 import Settings from "./pages/Settings";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Root />,
+    element: <RootLayout />,
     errorElement: <ErrorPage />, // catch any errors
     children: [
       {
         index: true,
-        element: <Home />,
+        element: <HomePage />,
+      },
+      {
+        path: "/game",
+        element: <GamePage />,
       },
       {
         path: "/settings",

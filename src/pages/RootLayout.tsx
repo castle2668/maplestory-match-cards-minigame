@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 import MainLayout from "@/layouts/MainLayout";
 
-const Root: React.FC = () => {
+const RootLayout: React.FC = () => {
   return (
     <MainLayout>
       <Outlet />
@@ -11,4 +11,4 @@ const Root: React.FC = () => {
   );
 };
 
-export default Root;
+export default RootLayout;
