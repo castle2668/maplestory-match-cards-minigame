@@ -30,7 +30,7 @@ const SimpleCard: React.FC<SimpleCardProps> = ({
         src={card.src}
         alt="card front"
         className={cn(
-          "w-32 h-32 object-cover border-2  border-white rounded-md [transform:rotateY(90deg)] transition-all ease-in duration-200 absolute",
+          "w-32 h-32 object-cover border  border-gray-400 rounded-md [transform:rotateY(90deg)] transition-all ease-in duration-200 absolute",
           flipped && "[transform:rotateY(0deg)] delay-200"
         )}
       />
@@ -38,7 +38,7 @@ const SimpleCard: React.FC<SimpleCardProps> = ({
         src={CoverImage}
         alt="card back"
         className={cn(
-          "w-32 h-32 object-cover border-2  border-white rounded-md [transform:rotateY(0deg)] transition-all ease-in duration-200 delay-200",
+          "w-32 h-32 object-cover border  border-gray-400 rounded-md [transform:rotateY(0deg)] transition-all ease-in duration-200 delay-200",
           flipped && "[transform:rotateY(90deg)] delay-0",
           disabled ? "cursor-not-allowed" : "cursor-pointer"
         )}

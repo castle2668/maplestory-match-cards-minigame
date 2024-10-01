@@ -177,9 +177,11 @@ const Game: React.FC = () => {
             <p className="text-yellow-400">
               [{players[0].name}] has joined the game.
             </p>
-            <p className="text-yellow-400">
-              [{players[1].name}] has joined the game.
-            </p>
+            {mode === MODE.MULTI && (
+              <p className="text-yellow-400">
+                [{players[1].name}] has joined the game.
+              </p>
+            )}
           </div>
         </div>
       </div>
