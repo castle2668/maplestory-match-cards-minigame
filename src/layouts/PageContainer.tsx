@@ -5,7 +5,11 @@ interface PageContainerProps {
 }
 
 const PageContainer: React.FC<PageContainerProps> = ({ children }) => {
-  return <main className="max-w-4xl min-h-svh my-10 mx-auto">{children}</main>;
+  return (
+    <main className="max-w-4xl min-h-[calc(100svh-216px)] my-0 mx-auto flex justify-center items-center">
+      {children}
+    </main>
+  );
 };
 
 export default PageContainer;
