@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 
-import { Button } from "@/components/ui/button";
+import MapleButton from "@/components/MapleButton";
 
+import Player1Image from "./assets/images/player1.png";
+import Player2Image from "./assets/images/player2.webp";
+import AvatarCard from "./components/AvatarCard";
 import SimpleCard from "./components/SimpleCard";
 
 const cardImages = [
@@ -82,25 +85,50 @@ const Game: React.FC = () => {
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
-      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-        MapleStroy Match Cards Mini Game
-      </h1>
-      <Button variant="outline" className="mt-10" onClick={shuffleCards}>
-        New Game
-      </Button>
-      <div className="grid grid-cols-4 gap-5 mt-10">
-        {cards.map((card) => (
-          <SimpleCard
-            key={card.id}
-            card={card}
-            handleChoice={handleChoice}
-            flipped={card === choiceOne || card === choiceTwo || card.matched}
-            disabled={checking}
-          />
-        ))}
+    <div className="flex gap-8">
+      <div className="border-solid border-2 border-gray-400 py-4 px-6">
+        <div className="grid grid-cols-4 gap-5">
+          {cards.map((card) => (
+            <SimpleCard
+              key={card.id}
+              card={card}
+              handleChoice={handleChoice}
+              flipped={card === choiceOne || card === choiceTwo || card.matched}
+              disabled={checking}
+            />
+          ))}
+        </div>
       </div>
-      <p className="mt-5">Turns: {turns}</p>
+      <div className="flex flex-col gap-2">
+        <div className="border-solid border-2 border-gray-400 p-2 pb-0 flex gap-2 items-start">
+          <div className="border-solid border-2 border-b-0 border-gray-400 text-sm p-1 pb-4">
+            MAPLE MINIGAME
+          </div>
+          <div className="text-sm bg-blue-200 p-1 text-nowrap">
+            Welcome to Maple Mini-Game
+          </div>
+        </div>
+        <div className="border-solid border-2 border-gray-400 p-2 flex gap-2">
+          <div className="flex-1">
+            <AvatarCard playerImage={Player1Image} playerName="CHI" />
+            <div className="border border-gray-400">Turns: {turns}</div>
+          </div>
+          <div className="flex-1">
+            <AvatarCard playerImage={Player2Image} playerName="SEAN" />
+            <div className="border border-gray-400">Turns: {turns}</div>
+          </div>
+        </div>
+        <div className="flex justify-end">
+          <MapleButton onClick={shuffleCards}>New Game</MapleButton>
+        </div>
+        <div className="border-solid border-2 border-gray-400 p-2 text-sm h-full">
+          <div className="bg-black text-white p-2 flex flex-col gap-1 h-full">
+            <p>Game Started.</p>
+            <p className="text-yellow-400">[CHI] has joined the game.</p>
+            <p className="text-yellow-400">[SEAN] has joined the game.</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

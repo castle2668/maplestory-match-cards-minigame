@@ -5,14 +5,15 @@ import ModeToggle from "@/components/ModeToggle";
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="bg-background opacity-80 border-double border-b-4 border-maple-900">
+    <nav className="bg-background opacity-80 border-double border-b-4 border-maple-500">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <Link
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <span className="self-center text-2xl font-semibold whitespace-nowrap">
-            <span className="text-maple-500">MapleStory</span>MatchCards
+            <span className="text-primary">MapleStory</span>
+            MatchCards
           </span>
         </Link>
         <div>
