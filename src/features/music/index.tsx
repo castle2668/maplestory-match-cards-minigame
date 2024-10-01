@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import useMusicStore from "@/features/music/store/musicStore";
+import { useMusicStore } from "@/features/music/store/musicStore";
 
 const Music: React.FC = () => {
   const audio = useRef<HTMLAudioElement>(null);

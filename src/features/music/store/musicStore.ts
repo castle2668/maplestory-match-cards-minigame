@@ -5,9 +5,7 @@ interface MusicState {
   allowAutoPlay: () => void;
 }
 
-const useMusicStore = create<MusicState>((set) => ({
+export const useMusicStore = create<MusicState>((set) => ({
   autoPlay: false,
   allowAutoPlay: () => set({ autoPlay: true }),
 }));
-
-export default useMusicStore;
