@@ -68,6 +68,15 @@ export default {
       backgroundImage: {
         "footer-texture": "url('/src/assets/images/footer-texture.png')",
       },
+      animation: {
+        "fade-in": "fadeIn 1s ease-in-out",
+      },
+      keyframes: {
+        fadeIn: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

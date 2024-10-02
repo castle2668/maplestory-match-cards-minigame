@@ -4,18 +4,34 @@ import MapleButton from "@/components/MapleButton";
 
 import Player1Image from "./assets/images/player1.png";
 import Player2Image from "./assets/images/player2.webp";
+import SuccessImage from "./assets/images/success.png";
 import AvatarCard from "./components/AvatarCard";
 import SimpleCard from "./components/SimpleCard";
 import { MODE } from "./data/constants";
 import { useGameStore } from "./store/gameStore";
+import {
+  playClearSound,
+  playClickSound,
+  playFailSound,
+  playMatchSound,
+} from "./utils/sounds";
 
 const cardImages = [
-  { src: "/images/horny-mushroom.jpeg", matched: false, flipped: false },
-  { src: "/images/orange-mushroom.jpeg", matched: false, flipped: false },
-  { src: "/images/pepe.jpeg", matched: false, flipped: false },
-  { src: "/images/ribbon-pig.jpeg", matched: false, flipped: false },
-  { src: "/images/slime.jpeg", matched: false, flipped: false },
-  { src: "/images/yeti.jpeg", matched: false, flipped: false },
+  { src: "/images/mobs/blue-mushroom.png", matched: false, flipped: false },
+  { src: "/images/mobs/blue-snail.png", matched: false, flipped: false },
+  { src: "/images/mobs/cold-eye.png", matched: false, flipped: false },
+  { src: "/images/mobs/curse-eye.png", matched: false, flipped: false },
+  { src: "/images/mobs/drake.png", matched: false, flipped: false },
+  { src: "/images/mobs/evil-eye.png", matched: false, flipped: false },
+  { src: "/images/mobs/horny-mushroom.png", matched: false, flipped: false },
+  { src: "/images/mobs/lorang.png", matched: false, flipped: false },
+  { src: "/images/mobs/lupin.png", matched: false, flipped: false },
+  { src: "/images/mobs/octopus.png", matched: false, flipped: false },
+  { src: "/images/mobs/pig.png", matched: false, flipped: false },
+  { src: "/images/mobs/ribbon-pig.png", matched: false, flipped: false },
+  { src: "/images/mobs/tortie.png", matched: false, flipped: false },
+  { src: "/images/mobs/wild-kargo.png", matched: false, flipped: false },
+  { src: "/images/mobs/wraith.png", matched: false, flipped: false },
 ];
 
 export interface Card {
@@ -32,6 +48,8 @@ const Game: React.FC = () => {
   const [choiceOne, setChoiceOne] = useState<Card | null>(null);
   const [choiceTwo, setChoiceTwo] = useState<Card | null>(null);
   const [checking, setChecking] = useState<boolean>(false); // disable all cards when the system is checking
+  const [isInitialReveal, setIsInitialReveal] = useState<boolean>(false);
+  const [isGameOver, setIsGameOver] = useState<boolean>(false);
 
   // reset players data
   const resetPlayersData = useCallback(() => {
@@ -53,18 +71,29 @@ const Game: React.FC = () => {
     setCards(shuffledCards);
     setChoiceOne(null);
     setChoiceTwo(null);
+
+    // when the game starts, show all cards for 1 second
+    setIsInitialReveal(true);
+    setTimeout(() => {
+      setIsInitialReveal(false);
+    }, 1000);
   }, []);
 
   // start a new game
-  const newGame = useCallback(() => {
+  const startNewGame = useCallback(() => {
     resetPlayersData();
     shuffleCards();
   }, [resetPlayersData, shuffleCards]);
 
+  const handleNewGame = () => {
+    playClickSound();
+    startNewGame();
+  };
+
   // start a new game automatically when the page is loaded
   useEffect(() => {
-    newGame();
-  }, [newGame]);
+    startNewGame();
+  }, [startNewGame]);
 
   // handle a choice
   const handleChoice = (card: Card) => {
@@ -85,6 +114,10 @@ const Game: React.FC = () => {
       setChecking(true); // disable all cards when the system is checking
 
       if (choiceOne.src === choiceTwo.src) {
+        setTimeout(() => {
+          playMatchSound();
+        }, 100);
+
         setCards((prevCards) => {
           return prevCards.map((card) =>
             card.src === choiceOne.src ? { ...card, matched: true } : card
@@ -101,6 +134,10 @@ const Game: React.FC = () => {
 
         resetChoices();
       } else {
+        setTimeout(() => {
+          playFailSound();
+        }, 100);
+
         setTimeout(() => {
           if (mode === MODE.SINGLE) {
             setPlayers((prevPlayers) =>
@@ -126,16 +163,37 @@ const Game: React.FC = () => {
     }
   }, [choiceOne, choiceTwo, mode, setPlayers]);
 
+  // check if the game is over
+  useEffect(() => {
+    if (
+      cards.length === cardImages.length * 2 &&
+      cards.every((card) => card.matched)
+    ) {
+      setTimeout(() => {
+        setIsGameOver(true);
+        playClearSound();
+      }, 500);
+      setTimeout(() => {
+        setIsGameOver(false);
+      }, 3000);
+    }
+  }, [cards]);
+
   return (
     <div className="flex gap-8">
       <div className="border-solid border-2 border-gray-400 py-4 px-6">
-        <div className="grid grid-cols-4 gap-5">
+        <div className="grid grid-cols-6 gap-x-3 gap-y-2">
           {cards.map((card) => (
             <SimpleCard
               key={card.id}
               card={card}
               handleChoice={handleChoice}
-              flipped={card === choiceOne || card === choiceTwo || card.matched}
+              flipped={
+                isInitialReveal ||
+                card === choiceOne ||
+                card === choiceTwo ||
+                card.matched
+              }
               disabled={checking}
             />
           ))}
@@ -169,7 +227,7 @@ const Game: React.FC = () => {
           )}
         </div>
         <div className="flex justify-end">
-          <MapleButton onClick={newGame}>New Game</MapleButton>
+          <MapleButton onClick={handleNewGame}>New Game</MapleButton>
         </div>
         <div className="border-solid border-2 border-gray-400 p-1 text-sm h-full">
           <div className="bg-black text-white p-1 flex flex-col gap-1 h-full border border-gray-400">
@@ -185,6 +243,13 @@ const Game: React.FC = () => {
           </div>
         </div>
       </div>
+      {isGameOver && (
+        <img
+          src={SuccessImage}
+          alt="Success Image"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-fade-in"
+        />
+      )}
     </div>
   );
 };

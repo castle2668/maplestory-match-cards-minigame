@@ -3,7 +3,8 @@ import React from "react";
 import { cn } from "@/lib/utils";
 
 import { Card } from "..";
-import CoverImage from "../assets/images/cover.jpeg";
+import CoverImage from "../assets/images/cover.png";
+import { playClickSound } from "../utils/sounds";
 
 interface SimpleCardProps {
   card: Card;
@@ -20,30 +21,41 @@ const SimpleCard: React.FC<SimpleCardProps> = ({
 }) => {
   const handleClick = () => {
     if (!disabled) {
+      playClickSound();
       handleChoice(card);
     }
   };
 
   return (
     <div className="relative">
-      <img
-        src={card.src}
-        alt="card front"
+      <div
         className={cn(
-          "w-32 h-32 object-cover border  border-gray-400 rounded-md [transform:rotateY(90deg)] transition-all ease-in duration-200 absolute",
+          "p-0.5 border-2 border-gray-500 rounded-md shadow-md absolute",
+          "[transform:rotateY(90deg)] transition-all ease-in duration-200",
           flipped && "[transform:rotateY(0deg)] delay-200"
         )}
-      />
-      <img
-        src={CoverImage}
-        alt="card back"
+      >
+        <img
+          src={card.src}
+          alt="card front"
+          className="w-16 h-24 object-cover object-left-top rounded-sm bg-maple-200"
+        />
+      </div>
+      <div
         className={cn(
-          "w-32 h-32 object-cover border  border-gray-400 rounded-md [transform:rotateY(0deg)] transition-all ease-in duration-200 delay-200",
+          "p-0.5 border-2 border-gray-500 rounded-md shadow-md",
+          "[transform:rotateY(0deg)] transition-all ease-in duration-200 delay-200",
           flipped && "[transform:rotateY(90deg)] delay-0",
-          disabled ? "cursor-not-allowed" : "cursor-pointer"
+          disabled && "cursor-not-allowed"
         )}
-        onClick={handleClick}
-      />
+      >
+        <img
+          src={CoverImage}
+          alt="card back"
+          className="w-16 h-24 object-cover object-center rounded-sm"
+          onClick={handleClick}
+        />
+      </div>
     </div>
   );
 };

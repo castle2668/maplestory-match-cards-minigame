@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import MapleButton from "@/components/MapleButton";
 import MapleWindow from "@/components/MapleWindow";
-import CoverImage from "@/features/game/assets/images/cover.jpeg";
+import CoverImage from "@/features/game/assets/images/cover.png";
 import MultiImage from "@/features/game/assets/images/multi.jpeg";
 import { MODE } from "@/features/game/data/constants";
 import { useGameStore } from "@/features/game/store/gameStore";
@@ -21,7 +21,7 @@ const HomePage: React.FC = () => {
         <div className="flex flex-col gap-4">
           <div
             className={cn(
-              "flex items-end gap-4 bg-blue-200 p-2 cursor-pointer border-solid border-2 border-blue-200",
+              "flex items-end gap-4 bg-blue-200 p-2 border-solid border-2 border-blue-200",
               mode === MODE.SINGLE && "border-solid border-2 border-maple-600"
             )}
             onClick={() => setMode(MODE.SINGLE)}
@@ -38,7 +38,7 @@ const HomePage: React.FC = () => {
           </div>
           <div
             className={cn(
-              "flex items-end gap-4 bg-blue-200 p-2 cursor-pointer border-solid border-2 border-blue-200",
+              "flex items-end gap-4 bg-blue-200 p-2 border-solid border-2 border-blue-200",
               mode === MODE.MULTI && "border-solid border-2 border-maple-600"
             )}
             onClick={() => setMode(MODE.MULTI)}
@@ -55,9 +55,9 @@ const HomePage: React.FC = () => {
           </div>
         </div>
         <div className="flex justify-end">
-          <MapleButton onClick={allowAutoPlay}>
-            <Link to="/game">READY!!</Link>
-          </MapleButton>
+          <Link to="/game">
+            <MapleButton onClick={allowAutoPlay}>READY!!</MapleButton>
+          </Link>
         </div>
       </div>
     </MapleWindow>
