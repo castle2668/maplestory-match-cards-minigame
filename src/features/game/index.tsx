@@ -4,6 +4,7 @@ import MapleButton from "@/components/MapleButton";
 
 import Player1Image from "./assets/images/player1.png";
 import Player2Image from "./assets/images/player2.webp";
+import GameOverImage from "./assets/images/success.png";
 import AvatarCard from "./components/AvatarCard";
 import SimpleCard from "./components/SimpleCard";
 import { MODE } from "./data/constants";
@@ -42,6 +43,7 @@ const Game: React.FC = () => {
   const [choiceTwo, setChoiceTwo] = useState<Card | null>(null);
   const [checking, setChecking] = useState<boolean>(false); // disable all cards when the system is checking
   const [isInitialReveal, setIsInitialReveal] = useState<boolean>(false);
+  const [isGameOver, setIsGameOver] = useState<boolean>(false);
 
   // reset players data
   const resetPlayersData = useCallback(() => {
@@ -142,6 +144,16 @@ const Game: React.FC = () => {
     }
   }, [choiceOne, choiceTwo, mode, setPlayers]);
 
+  // check if the game is over
+  useEffect(() => {
+    if (
+      cards.length === cardImages.length * 2 &&
+      cards.every((card) => card.matched)
+    ) {
+      setIsGameOver(true);
+    }
+  }, [cards]);
+
   return (
     <div className="flex gap-8">
       <div className="border-solid border-2 border-gray-400 py-4 px-6">
@@ -206,6 +218,13 @@ const Game: React.FC = () => {
           </div>
         </div>
       </div>
+      {isGameOver && (
+        <img
+          src={GameOverImage}
+          alt="Game Over Image"
+          className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-fade-in"
+        />
+      )}
     </div>
   );
 };
