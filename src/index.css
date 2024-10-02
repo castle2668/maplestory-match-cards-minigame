@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+  cursor: url("./assets/cursors/aero_arrow.cur"), auto !important;
+}
+
 body {
   font-family: "Noto Sans TC", sans-serif;
   margin: 0;

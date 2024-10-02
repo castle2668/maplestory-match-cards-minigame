@@ -44,7 +44,7 @@ const SimpleCard: React.FC<SimpleCardProps> = ({
           "p-0.5 border-2 border-gray-500 rounded-md shadow-md",
           "[transform:rotateY(0deg)] transition-all ease-in duration-200 delay-200",
           flipped && "[transform:rotateY(90deg)] delay-0",
-          disabled ? "cursor-not-allowed" : "cursor-pointer"
+          disabled && "cursor-not-allowed"
         )}
       >
         <img
