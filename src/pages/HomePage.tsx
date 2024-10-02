@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import MapleButton from "@/components/MapleButton";
 import MapleWindow from "@/components/MapleWindow";
-import CoverImage from "@/features/game/assets/images/cover.jpeg";
+import CoverImage from "@/features/game/assets/images/cover.png";
 import MultiImage from "@/features/game/assets/images/multi.jpeg";
 import { MODE } from "@/features/game/data/constants";
 import { useGameStore } from "@/features/game/store/gameStore";

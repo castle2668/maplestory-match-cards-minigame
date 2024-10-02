@@ -11,7 +11,7 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
-    <div className="bg-[url('/maps/Ellinia.jpg')]">
+    <div className="bg-[url('/images/maps/Ellinia.jpg')]">
       <Navbar />
       <PageContainer>{children}</PageContainer>
       <Footer />
