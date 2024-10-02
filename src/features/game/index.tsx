@@ -4,11 +4,17 @@ import MapleButton from "@/components/MapleButton";
 
 import Player1Image from "./assets/images/player1.png";
 import Player2Image from "./assets/images/player2.webp";
-import GameOverImage from "./assets/images/success.png";
+import SuccessImage from "./assets/images/success.png";
 import AvatarCard from "./components/AvatarCard";
 import SimpleCard from "./components/SimpleCard";
 import { MODE } from "./data/constants";
 import { useGameStore } from "./store/gameStore";
+import {
+  playClearSound,
+  playClickSound,
+  playFailSound,
+  playMatchSound,
+} from "./utils/sounds";
 
 const cardImages = [
   { src: "/images/mobs/blue-mushroom.png", matched: false, flipped: false },
@@ -74,15 +80,20 @@ const Game: React.FC = () => {
   }, []);
 
   // start a new game
-  const newGame = useCallback(() => {
+  const startNewGame = useCallback(() => {
     resetPlayersData();
     shuffleCards();
   }, [resetPlayersData, shuffleCards]);
 
+  const handleNewGame = () => {
+    playClickSound();
+    startNewGame();
+  };
+
   // start a new game automatically when the page is loaded
   useEffect(() => {
-    newGame();
-  }, [newGame]);
+    startNewGame();
+  }, [startNewGame]);
 
   // handle a choice
   const handleChoice = (card: Card) => {
@@ -103,6 +114,10 @@ const Game: React.FC = () => {
       setChecking(true); // disable all cards when the system is checking
 
       if (choiceOne.src === choiceTwo.src) {
+        setTimeout(() => {
+          playMatchSound();
+        }, 100);
+
         setCards((prevCards) => {
           return prevCards.map((card) =>
             card.src === choiceOne.src ? { ...card, matched: true } : card
@@ -119,6 +134,10 @@ const Game: React.FC = () => {
 
         resetChoices();
       } else {
+        setTimeout(() => {
+          playFailSound();
+        }, 100);
+
         setTimeout(() => {
           if (mode === MODE.SINGLE) {
             setPlayers((prevPlayers) =>
@@ -150,7 +169,13 @@ const Game: React.FC = () => {
       cards.length === cardImages.length * 2 &&
       cards.every((card) => card.matched)
     ) {
-      setIsGameOver(true);
+      setTimeout(() => {
+        setIsGameOver(true);
+        playClearSound();
+      }, 500);
+      setTimeout(() => {
+        setIsGameOver(false);
+      }, 3000);
     }
   }, [cards]);
 
@@ -202,7 +227,7 @@ const Game: React.FC = () => {
           )}
         </div>
         <div className="flex justify-end">
-          <MapleButton onClick={newGame}>New Game</MapleButton>
+          <MapleButton onClick={handleNewGame}>New Game</MapleButton>
         </div>
         <div className="border-solid border-2 border-gray-400 p-1 text-sm h-full">
           <div className="bg-black text-white p-1 flex flex-col gap-1 h-full border border-gray-400">
@@ -220,8 +245,8 @@ const Game: React.FC = () => {
       </div>
       {isGameOver && (
         <img
-          src={GameOverImage}
-          alt="Game Over Image"
+          src={SuccessImage}
+          alt="Success Image"
           className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-fade-in"
         />
       )}

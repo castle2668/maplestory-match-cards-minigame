@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 
 import { Card } from "..";
 import CoverImage from "../assets/images/cover.png";
+import { playClickSound } from "../utils/sounds";
 
 interface SimpleCardProps {
   card: Card;
@@ -20,6 +21,7 @@ const SimpleCard: React.FC<SimpleCardProps> = ({
 }) => {
   const handleClick = () => {
     if (!disabled) {
+      playClickSound();
       handleChoice(card);
     }
   };
