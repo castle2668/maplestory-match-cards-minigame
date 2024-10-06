@@ -40,7 +40,7 @@ const Game: React.FC = () => {
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
 
   // Use React Query to fetch mobs data and filter out duplicated mobs by name
-  const { data: mobsData } = useQuery({
+  const { data: mobsData, isError } = useQuery({
     queryKey: ["mobs"],
     queryFn: async () => {
       const response = await fetch(
@@ -69,7 +69,7 @@ const Game: React.FC = () => {
     ]);
   }, [setPlayers]);
   const shuffleCards = useCallback(async () => {
-    if (!mobs.length) {
+    if (!mobs.length && isError) {
       // If there is an issue with the API, use the default cards
       const shuffledCards = [...defaultMobCards, ...defaultMobCards]
         .sort(() => Math.random() - 0.5)
@@ -115,7 +115,7 @@ const Game: React.FC = () => {
     setTimeout(() => {
       setIsInitialReveal(false);
     }, 1000);
-  }, [mobs]);
+  }, [mobs, isError]);
   const startNewGame = useCallback(() => {
     resetPlayersData();
     shuffleCards();
