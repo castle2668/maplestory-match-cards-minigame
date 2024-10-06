@@ -1,4 +1,4 @@
-# MapleStory Match Cards Mini Game
+# MapleStory Match Cards Mini Game (WIP)
 
 ## Tech Stack
 
