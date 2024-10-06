@@ -292,9 +292,10 @@ const Game: React.FC = () => {
   );
 };
 
+// Use React Query to provide the data fetching and caching
 const queryClient = new QueryClient();
 
-const GameApp: React.FC = () => {
+const GameContainer: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Game />
@@ -302,4 +303,4 @@ const GameApp: React.FC = () => {
   );
 };
 
-export default GameApp;
+export default GameContainer;
