@@ -55,9 +55,9 @@ const HomePage: React.FC = () => {
           </div>
         </div>
         <div className="flex justify-end">
-          <Link to="/game">
-            <MapleButton onClick={allowAutoPlay}>READY!!</MapleButton>
-          </Link>
+          <MapleButton onClick={allowAutoPlay}>
+            <Link to="/game">READY!! </Link>
+          </MapleButton>
         </div>
       </div>
     </MapleWindow>

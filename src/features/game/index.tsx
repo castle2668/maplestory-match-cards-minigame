@@ -1,3 +1,8 @@
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
 import React, { useCallback, useEffect, useState } from "react";
 
 import MapleButton from "@/components/MapleButton";
@@ -7,7 +12,8 @@ import Player2Image from "./assets/images/player2.webp";
 import SuccessImage from "./assets/images/success.png";
 import AvatarCard from "./components/AvatarCard";
 import SimpleCard from "./components/SimpleCard";
-import { MODE } from "./data/constants";
+import { API_REGION, API_VERSION, DEFAULT_CARDS, MODE } from "./data/constants";
+import { Card, Mob } from "./interfaces";
 import { useGameStore } from "./store/gameStore";
 import {
   playClearSound,
@@ -16,99 +22,126 @@ import {
   playMatchSound,
 } from "./utils/sounds";
 
-const cardImages = [
-  { src: "/images/mobs/blue-mushroom.png", matched: false, flipped: false },
-  { src: "/images/mobs/blue-snail.png", matched: false, flipped: false },
-  { src: "/images/mobs/cold-eye.png", matched: false, flipped: false },
-  { src: "/images/mobs/curse-eye.png", matched: false, flipped: false },
-  { src: "/images/mobs/drake.png", matched: false, flipped: false },
-  { src: "/images/mobs/evil-eye.png", matched: false, flipped: false },
-  { src: "/images/mobs/horny-mushroom.png", matched: false, flipped: false },
-  { src: "/images/mobs/lorang.png", matched: false, flipped: false },
-  { src: "/images/mobs/lupin.png", matched: false, flipped: false },
-  { src: "/images/mobs/octopus.png", matched: false, flipped: false },
-  { src: "/images/mobs/pig.png", matched: false, flipped: false },
-  { src: "/images/mobs/ribbon-pig.png", matched: false, flipped: false },
-  { src: "/images/mobs/tortie.png", matched: false, flipped: false },
-  { src: "/images/mobs/wild-kargo.png", matched: false, flipped: false },
-  { src: "/images/mobs/wraith.png", matched: false, flipped: false },
-];
-
-export interface Card {
-  src: string;
-  id: number;
-  matched: boolean;
-  flipped: boolean;
-}
+const defaultMobCards = DEFAULT_CARDS.map((src) => ({
+  src,
+  matched: false,
+  flipped: false,
+}));
 
 const Game: React.FC = () => {
   const { mode, players, setPlayers } = useGameStore();
 
-  const [cards, setCards] = useState<Card[]>([]);
+  const [mobs, setMobs] = useState<Mob[]>([]); // mobs data fetched from the API
+  const [cards, setCards] = useState<Card[]>([]); // cards data to be displayed
   const [choiceOne, setChoiceOne] = useState<Card | null>(null);
   const [choiceTwo, setChoiceTwo] = useState<Card | null>(null);
   const [checking, setChecking] = useState<boolean>(false); // disable all cards when the system is checking
   const [isInitialReveal, setIsInitialReveal] = useState<boolean>(false);
   const [isGameOver, setIsGameOver] = useState<boolean>(false);
 
-  // reset players data
+  // Use React Query to fetch mobs data and filter out duplicated mobs by name
+  const { data: mobsData } = useQuery({
+    queryKey: ["mobs"],
+    queryFn: async () => {
+      const response = await fetch(
+        `https://maplestory.io/api/${API_REGION}/${API_VERSION}/mob/?&count=50&startPosition=0`
+      );
+      return await response.json();
+    },
+    retry: false,
+  });
+  useEffect(() => {
+    if (!mobsData) return;
+
+    const filteredMobs = mobsData.reduce((acc: Mob[], mob: Mob) => {
+      const isDuplicated = acc.some((m: Mob) => m.name === mob.name);
+      return isDuplicated ? acc : [...acc, mob];
+    }, []);
+
+    setMobs(filteredMobs);
+  }, [mobsData]);
+
+  // To start a new game, we need to reset the players data and shuffle the cards
   const resetPlayersData = useCallback(() => {
     setPlayers([
       { id: 1, name: "Player 1", score: 0, turns: 0, current: true },
       { id: 2, name: "Player 2", score: 0, turns: 0, current: false },
     ]);
   }, [setPlayers]);
+  const shuffleCards = useCallback(async () => {
+    if (!mobs.length) {
+      // If there is an issue with the API, use the default cards
+      const shuffledCards = [...defaultMobCards, ...defaultMobCards]
+        .sort(() => Math.random() - 0.5)
+        .map((card) => ({
+          ...card,
+          id: Math.random(),
+        }));
+      setCards(shuffledCards);
+    } else {
+      // Randomly select 15 mobs
+      const randomMobs = mobs.sort(() => Math.random() - 0.5).slice(0, 15);
 
-  // shuffle cards
-  const shuffleCards = useCallback(() => {
-    const shuffledCards = [...cardImages, ...cardImages]
-      .sort(() => Math.random() - 0.5)
-      .map((card) => ({
+      // Use Promise.all to fetch all images at once
+      const images = await Promise.all(
+        randomMobs.map(async (mob: Mob) => {
+          const imageResponse = await fetch(
+            `https://maplestory.io/api/${API_REGION}/${API_VERSION}/mob/${mob.id}/render/stand`
+          );
+          return imageResponse.url;
+        })
+      );
+
+      // Combine the images into the format of Card
+      const mobCards = images.map((image) => ({
+        src: image,
+        matched: false,
+        flipped: false,
+      }));
+      const shuffledCards = [...mobCards, ...mobCards].map((card) => ({
         ...card,
         id: Math.random(),
       }));
 
-    setCards(shuffledCards);
+      setCards(shuffledCards);
+    }
+
+    // Reset choices
     setChoiceOne(null);
     setChoiceTwo(null);
 
-    // when the game starts, show all cards for 1 second
+    // When the game starts, show all cards for 1 second
     setIsInitialReveal(true);
     setTimeout(() => {
       setIsInitialReveal(false);
     }, 1000);
-  }, []);
-
-  // start a new game
+  }, [mobs]);
   const startNewGame = useCallback(() => {
     resetPlayersData();
     shuffleCards();
   }, [resetPlayersData, shuffleCards]);
 
-  const handleNewGame = () => {
+  // Start a new game when the "New Game" button is clicked, or when the page is loaded
+  const handleClickNewGame = () => {
     playClickSound();
     startNewGame();
   };
-
-  // start a new game automatically when the page is loaded
   useEffect(() => {
     startNewGame();
   }, [startNewGame]);
 
-  // handle a choice
+  // Handle a choice
   const handleChoice = (card: Card) => {
     if (card.id === choiceOne?.id) return; // prevent double clicking on the same card
     return choiceOne ? setChoiceTwo(card) : setChoiceOne(card);
   };
 
-  // reset choices
+  // Compare two selected cards
   const resetChoices = () => {
     setChoiceOne(null);
     setChoiceTwo(null);
     setChecking(false); // enable all cards after the system has checked
   };
-
-  // compare two selected cards
   useEffect(() => {
     if (choiceOne && choiceTwo) {
       setChecking(true); // disable all cards when the system is checking
@@ -163,12 +196,9 @@ const Game: React.FC = () => {
     }
   }, [choiceOne, choiceTwo, mode, setPlayers]);
 
-  // check if the game is over
+  // Check if the game is over
   useEffect(() => {
-    if (
-      cards.length === cardImages.length * 2 &&
-      cards.every((card) => card.matched)
-    ) {
+    if (cards.length === 30 && cards.every((card) => card.matched)) {
       setTimeout(() => {
         setIsGameOver(true);
         playClearSound();
@@ -195,6 +225,7 @@ const Game: React.FC = () => {
                 card.matched
               }
               disabled={checking}
+              cardSource={mobs.length ? "api" : "local"}
             />
           ))}
         </div>
@@ -227,7 +258,7 @@ const Game: React.FC = () => {
           )}
         </div>
         <div className="flex justify-end">
-          <MapleButton onClick={handleNewGame}>New Game</MapleButton>
+          <MapleButton onClick={handleClickNewGame}>New Game</MapleButton>
         </div>
         <div className="border-solid border-2 border-gray-400 p-1 text-sm h-full">
           <div className="bg-black text-white p-1 flex flex-col gap-1 h-full border border-gray-400">
@@ -254,4 +285,14 @@ const Game: React.FC = () => {
   );
 };
 
-export default Game;
+const queryClient = new QueryClient();
+
+const GameApp: React.FC = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Game />
+    </QueryClientProvider>
+  );
+};
+
+export default GameApp;
