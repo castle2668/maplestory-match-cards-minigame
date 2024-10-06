@@ -1,14 +1,7 @@
 import { create } from "zustand";
 
 import { MODE } from "../data/constants";
-
-export interface Player {
-  id: number;
-  name: string;
-  score: number;
-  turns: number;
-  current: boolean;
-}
+import { Player } from "../interfaces";
 
 // accept argument of type T or a callback using previous state of type T
 type ReactStyleStateSetter<T> = T | ((prev: T) => T);
