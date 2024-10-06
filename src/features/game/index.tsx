@@ -6,6 +6,7 @@ import {
 import React, { useCallback, useEffect, useState } from "react";
 
 import MapleButton from "@/components/MapleButton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import Player1Image from "./assets/images/player1.png";
 import Player2Image from "./assets/images/player2.webp";
@@ -213,21 +214,27 @@ const Game: React.FC = () => {
     <div className="flex gap-8">
       <div className="border-solid border-2 border-gray-400 py-4 px-6">
         <div className="grid grid-cols-6 gap-x-3 gap-y-2">
-          {cards.map((card) => (
-            <SimpleCard
-              key={card.id}
-              card={card}
-              handleChoice={handleChoice}
-              flipped={
-                isInitialReveal ||
-                card === choiceOne ||
-                card === choiceTwo ||
-                card.matched
-              }
-              disabled={checking}
-              cardSource={mobs.length ? "api" : "local"}
-            />
-          ))}
+          {cards.length > 0
+            ? cards.map((card) => (
+                <SimpleCard
+                  key={card.id}
+                  card={card}
+                  handleChoice={handleChoice}
+                  flipped={
+                    isInitialReveal ||
+                    card === choiceOne ||
+                    card === choiceTwo ||
+                    card.matched
+                  }
+                  disabled={checking}
+                  cardSource={mobs.length ? "api" : "local"}
+                />
+              ))
+            : Array.from({ length: 30 }, () => (
+                <div className="p-0.5 border-2 border-gray-500 rounded-md shadow-md">
+                  <Skeleton className="w-16 h-24 rounded-sm" />
+                </div>
+              ))}
         </div>
       </div>
       <div className="flex flex-col gap-2">
