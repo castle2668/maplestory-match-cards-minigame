@@ -2,7 +2,7 @@
 
 ## Tech Stack
 
-Vite + React + TypeScript + Tailwind CSS + Shadcn UI + Zustand + ESLint
+Vite + React + Tailwind CSS + Shadcn UI + TypeScript + ESLint + Zustand + React Query + Vitest + React Testing Library
 
 ## Project Structures
 
@@ -23,6 +23,7 @@ The project follows a modular and scalable structure to ensure maintainability a
 │   │   │   ├── assets/     # Static resources specifically for the game (e.g., images, sounds).
 │   │   │   ├── components/ # UI components related to game functionality.
 │   │   │   ├── data/       # Data and configurations for the game.
+│   │   │   ├── interfaces/ # Interfaces for the game.
 │   │   │   ├── store/      # Zustand store related to the game feature.
 │   │   │   └── utils/      # Utility functions used in game features.
 │   │   └── music/          # Music-related components and logic for handling audio playback.
