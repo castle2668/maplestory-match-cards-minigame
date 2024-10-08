@@ -230,8 +230,11 @@ const Game: React.FC = () => {
                   cardSource={mobs.length ? "api" : "local"}
                 />
               ))
-            : Array.from({ length: 30 }, () => (
-                <div className="p-0.5 border-2 border-gray-500 rounded-md shadow-md">
+            : Array.from({ length: 30 }, (_, index) => (
+                <div
+                  key={index}
+                  className="p-0.5 border-2 border-gray-500 rounded-md shadow-md"
+                >
                   <Skeleton className="w-16 h-24 rounded-sm" />
                 </div>
               ))}
