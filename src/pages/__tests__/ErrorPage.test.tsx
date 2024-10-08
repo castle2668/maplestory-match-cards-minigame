@@ -21,16 +21,12 @@ describe("ErrorPage", () => {
   it("should render error message when the ErrorPage is loaded", () => {
     render(<RouterProvider router={router} />);
 
-    screen.debug();
-
     const errorMessage = screen.getByText(/Oops/i);
     expect(errorMessage).toBeInTheDocument();
   });
 
   it("should render Bulletin Board Image when the ErrorPage is loaded", () => {
     render(<RouterProvider router={router} />);
-
-    screen.debug();
 
     const bulletinBoardImage = screen.getByRole("img", {
       name: /Bulletin Board/i,
