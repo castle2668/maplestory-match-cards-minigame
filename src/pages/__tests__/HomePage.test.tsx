@@ -1,4 +1,5 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter, Route, Routes } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 
@@ -21,6 +22,8 @@ describe("HomePage", () => {
   });
 
   it("should render GamePage after clicking READY button", async () => {
+    const user = userEvent.setup();
+
     render(
       <MemoryRouter initialEntries={["/"]}>
         <Routes>
@@ -33,10 +36,7 @@ describe("HomePage", () => {
     const readyButton = screen.getByText(/READY/i);
     expect(readyButton).toBeInTheDocument();
 
-    // fireEvent.click(readyButton);
-    await act(async () => {
-      fireEvent.click(readyButton);
-    });
+    await user.click(readyButton);
 
     expect(screen.getByText(/MAPLE MINIGAME/i)).toBeInTheDocument();
   });
