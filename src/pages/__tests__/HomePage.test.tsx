@@ -22,6 +22,8 @@ describe("HomePage", () => {
   });
 
   it("should render GamePage after clicking READY button", async () => {
+    const user = userEvent.setup();
+
     render(
       <MemoryRouter initialEntries={["/"]}>
         <Routes>
@@ -34,7 +36,7 @@ describe("HomePage", () => {
     const readyButton = screen.getByText(/READY/i);
     expect(readyButton).toBeInTheDocument();
 
-    await userEvent.click(readyButton);
+    await user.click(readyButton);
 
     expect(screen.getByText(/MAPLE MINIGAME/i)).toBeInTheDocument();
   });
