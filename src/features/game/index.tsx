@@ -235,7 +235,10 @@ const Game: React.FC = () => {
                   key={index}
                   className="p-0.5 border-2 border-gray-500 rounded-md shadow-md"
                 >
-                  <Skeleton className="w-16 h-24 rounded-sm" />
+                  <Skeleton
+                    className="w-16 h-24 rounded-sm"
+                    data-testid="skeleton-card"
+                  />
                 </div>
               ))}
         </div>

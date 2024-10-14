@@ -6,7 +6,7 @@ import CoverImage from "../assets/images/cover.png";
 import { Card } from "../interfaces";
 import { playClickSound } from "../utils/sounds";
 
-interface SimpleCardProps {
+export interface SimpleCardProps {
   card: Card;
   handleChoice: (card: Card) => void;
   flipped: boolean;
