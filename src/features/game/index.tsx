@@ -1,19 +1,16 @@
-import {
-  QueryClient,
-  QueryClientProvider,
-  useQuery,
-} from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import React, { useCallback, useEffect, useState } from "react";
 
 import MapleButton from "@/components/MapleButton";
 import { Skeleton } from "@/components/ui/skeleton";
 
+import { fetchMobImageById, fetchMobs } from "./apis/mobs";
 import Player1Image from "./assets/images/player1.png";
 import Player2Image from "./assets/images/player2.webp";
 import SuccessImage from "./assets/images/success.png";
 import AvatarCard from "./components/AvatarCard";
 import SimpleCard from "./components/SimpleCard";
-import { API_REGION, API_VERSION, DEFAULT_CARDS, MODE } from "./data/constants";
+import { DEFAULT_CARDS, MODE } from "./data/constants";
 import { Card, Mob } from "./interfaces";
 import { useGameStore } from "./store/gameStore";
 import {
@@ -43,12 +40,7 @@ const Game: React.FC = () => {
   // Use React Query to fetch mobs data and filter out duplicated mobs by name
   const { data: mobsData, isError } = useQuery({
     queryKey: ["mobs"],
-    queryFn: async () => {
-      const response = await fetch(
-        `https://maplestory.io/api/${API_REGION}/${API_VERSION}/mob/?&count=50&startPosition=0`
-      );
-      return await response.json();
-    },
+    queryFn: fetchMobs,
     retry: false,
   });
   useEffect(() => {
@@ -86,10 +78,8 @@ const Game: React.FC = () => {
       // Use Promise.all to fetch all images at once
       const images = await Promise.all(
         randomMobs.map(async (mob: Mob) => {
-          const imageResponse = await fetch(
-            `https://maplestory.io/api/${API_REGION}/${API_VERSION}/mob/${mob.id}/render/stand`
-          );
-          return imageResponse.url;
+          const imageUrl = await fetchMobImageById(mob.id);
+          return imageUrl;
         })
       );
 
@@ -298,15 +288,4 @@ const Game: React.FC = () => {
   );
 };
 
-// Use React Query to provide the data fetching and caching
-const queryClient = new QueryClient();
-
-const GameContainer: React.FC = () => {
-  return (
-    <QueryClientProvider client={queryClient}>
-      <Game />
-    </QueryClientProvider>
-  );
-};
-
-export default GameContainer;
+export default Game;
