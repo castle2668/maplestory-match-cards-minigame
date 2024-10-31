@@ -218,6 +218,7 @@ const Game: React.FC = () => {
                   }
                   disabled={checking}
                   cardSource={mobs.length ? "api" : "local"}
+                  data-testid="simple-card"
                 />
               ))
             : Array.from({ length: 30 }, (_, index) => (

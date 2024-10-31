@@ -11,7 +11,10 @@ const Navbar: React.FC = () => {
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <h1 className="self-center text-2xl font-semibold whitespace-nowrap">
+          <h1
+            className="self-center text-2xl font-semibold whitespace-nowrap"
+            data-testid="cypress-title"
+          >
             <span className="text-primary">MapleStory</span>
             MatchCards
           </h1>

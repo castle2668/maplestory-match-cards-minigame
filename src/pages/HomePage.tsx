@@ -25,6 +25,7 @@ const HomePage: React.FC = () => {
               mode === MODE.SINGLE && "border-solid border-2 border-maple-600"
             )}
             onClick={() => setMode(MODE.SINGLE)}
+            data-testid="single-mode"
           >
             <img
               src={CoverImage}
@@ -42,6 +43,7 @@ const HomePage: React.FC = () => {
               mode === MODE.MULTI && "border-solid border-2 border-maple-600"
             )}
             onClick={() => setMode(MODE.MULTI)}
+            data-testid="multi-mode"
           >
             <img
               src={MultiImage}
