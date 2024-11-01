@@ -8,25 +8,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
-
-import MapleButton from "./MapleButton";
 
 interface MapleWindowProps {
   children: React.ReactNode;
-  size?: "sm" | "lg";
 }
 
 const MapleWindow: React.FC<MapleWindowProps> = (props) => {
-  const { children, size = "lg" } = props;
+  const { children } = props;
 
   return (
-    <Card
-      className={cn(
-        "w-96 border-2 rounded-sm border-gray-400",
-        size === "lg" && "w-auto"
-      )}
-    >
+    <Card className="w-auto border-2 rounded-sm border-gray-400">
       <CardHeader className="bg-blue-200 border-solid border-b-2 border-gray-400 p-1">
         <CardTitle className="flex gap-1 items-center">
           <Avatar className="w-5 h-5">
@@ -38,8 +29,17 @@ const MapleWindow: React.FC<MapleWindowProps> = (props) => {
       <CardContent className="border-solid border-b-2 border-gray-400 py-2 px-4">
         {children}
       </CardContent>
-      <CardFooter className="p-2">
-        <MapleButton size="sm">SETTINGS</MapleButton>
+      <CardFooter className="p-2 justify-center">
+        <div>
+          Copyright © 2024{" "}
+          <a
+            href="https://github.com/castle2668"
+            className="underline hover:text-maple-600"
+          >
+            Sean Huang
+          </a>
+          . All rights reserved.
+        </div>
       </CardFooter>
     </Card>
   );
