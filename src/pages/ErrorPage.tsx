@@ -21,8 +21,8 @@ const ErrorPage: React.FC = () => {
   };
 
   return (
-    <div className="relative w-full h-[calc(100vh-212px)]">
-      <div className="absolute -bottom-1 left-0">
+    <div className="relative w-full h-[calc(100vh-68px)]">
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2">
         <div className="text-white font-bold absolute top-[150px] left-[175px]">
           <ErrorMessage />
         </div>

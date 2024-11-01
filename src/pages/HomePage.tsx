@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 
 import MapleButton from "@/components/MapleButton";
 import MapleWindow from "@/components/MapleWindow";
-import CoverImage from "@/features/game/assets/images/cover.png";
 import MultiImage from "@/features/game/assets/images/multi.jpeg";
+import SingleImage from "@/features/game/assets/images/single.jpeg";
 import { MODE } from "@/features/game/data/constants";
 import { useGameStore } from "@/features/game/store/gameStore";
 import { useMusicStore } from "@/features/music/store/musicStore";
@@ -15,7 +15,7 @@ const HomePage: React.FC = () => {
   const { allowAutoPlay } = useMusicStore();
 
   return (
-    <MapleWindow size="sm">
+    <MapleWindow>
       <div className="flex flex-col gap-10">
         {/* Game Options */}
         <div className="flex flex-col gap-4">
@@ -28,7 +28,7 @@ const HomePage: React.FC = () => {
             data-testid="single-mode"
           >
             <img
-              src={CoverImage}
+              src={SingleImage}
               alt="MapleStory Mini Game Cover"
               className="w-24 h-20 object-cover border-solid border-2 border-gray-400"
             />
