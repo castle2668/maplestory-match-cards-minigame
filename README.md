@@ -1,4 +1,4 @@
-# MapleStory Match Cards Mini Game (WIP)
+# MapleStory Match Cards Mini Game
 
 ![Vite](https://img.shields.io/badge/vite-%23646CFF.svg?style=for-the-badge&logo=vite&logoColor=white)
 ![React](https://img.shields.io/badge/react-%2320232a.svg?style=for-the-badge&logo=react&logoColor=%2361DAFB)
@@ -11,7 +11,7 @@
 
 ## Tech Stack
 
-Vite + React + Tailwind CSS + Shadcn UI + TypeScript + ESLint + Zustand + React Query + Vitest + React Testing Library
+Vite + React + Tailwind CSS + Shadcn UI + TypeScript + ESLint + Zustand + React Query + Vitest + React Testing Library + Cypress
 
 ## Project Structures
 
