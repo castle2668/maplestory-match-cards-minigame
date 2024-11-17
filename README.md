@@ -11,7 +11,7 @@
 
 ## Tech Stack
 
-Vite + React + Tailwind CSS + Shadcn UI + TypeScript + ESLint + Zustand + React Query + Vitest + React Testing Library
+Vite + React + Tailwind CSS + Shadcn UI + TypeScript + ESLint + Zustand + React Query + Vitest + React Testing Library + Cypress
 
 ## Project Structures
 
